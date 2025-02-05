@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.example.entity.Point;
 import org.example.entity.Vector;
+import org.springframework.stereotype.Component;
 
 /**
  * Реализация интерфейса MovingObject.
@@ -12,6 +13,7 @@ import org.example.entity.Vector;
 @Slf4j
 @Getter
 @Setter
+@Component
 @AllArgsConstructor
 @NoArgsConstructor
 public class MovingObjectImpl implements MovingObject {
