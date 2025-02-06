@@ -1,57 +1,86 @@
 package org.example.rotation;
 
+import org.example.entity.Angle;
+import org.example.exceptions.handler.ExceptionHandler;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class RotateTest {
 
     @Test
-    void testRotate() {
-        // Проверка корректного поворота
-        RotatingObjectImpl rotatingObject = new RotatingObjectImpl(90, 45);
-        Rotate rotate = new Rotate(rotatingObject);
+    void testRotate() throws Exception {
+        Angle initialAngle = new Angle(90, 360);
+        Angle angularVelocity = new Angle(45, 360);
+        RotatingObjectImpl rotatingObject = new RotatingObjectImpl(initialAngle, angularVelocity);
+
+        ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+        Rotate rotate = new Rotate(rotatingObject, exceptionHandler);
+
         rotate.execute();
 
-        // Проверяем новое направление
-        assertEquals(135, rotatingObject.getDirection());
+        assertEquals(new Angle(135, 360), rotatingObject.getAngle());
+
+        verifyNoInteractions(exceptionHandler);
     }
 
     @Test
-    void testGetDirectionThrowsExceptionWhenDirectionNotSet() {
-        RotatingObjectImpl rotatingObject = new RotatingObjectImpl(null, 45);
+    void testRotateWithWrapAround() throws Exception {
+        Angle initialAngle = new Angle(330, 360);
+        Angle angularVelocity = new Angle(60, 360);
+        RotatingObjectImpl rotatingObject = new RotatingObjectImpl(initialAngle, angularVelocity);
 
-        Exception exception = assertThrows(IllegalStateException.class, rotatingObject::getDirection);
-        assertEquals("Direction is not set. Unable to get current direction.", exception.getMessage());
+        ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+        Rotate rotate = new Rotate(rotatingObject, exceptionHandler);
+
+        rotate.execute();
+
+        assertEquals(new Angle(30, 360), rotatingObject.getAngle());
+
+        verifyNoInteractions(exceptionHandler);
     }
 
     @Test
-    void testSetDirectionThrowsExceptionForInvalidValues() {
-        RotatingObjectImpl rotatingObject = new RotatingObjectImpl(90, 45);
+    void testRotateWithDifferentDenominatorsThrowsException() {
+        Angle initialAngle = new Angle(90, 360);
+        Angle angularVelocity = new Angle(1, 180);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> rotatingObject.setDirection(-1));
-        assertEquals("Direction must be between 0 and 359 degrees.", exception.getMessage());
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            initialAngle.add(angularVelocity);
+        });
 
-        exception = assertThrows(IllegalArgumentException.class, () -> rotatingObject.setDirection(360));
-        assertEquals("Direction must be between 0 and 359 degrees.", exception.getMessage());
+        assertEquals("Angles must have the same denominator.", exception.getMessage());
     }
 
     @Test
-    void testGetAngularVelocityThrowsExceptionForInvalidVelocity() {
-        RotatingObjectImpl rotatingObject = new RotatingObjectImpl(90, 0);
+    void testExecuteHandlesException() throws Exception {
+        RotatingObject rotatingObject = mock(RotatingObject.class);
+        doThrow(new IllegalStateException("Rotation error")).when(rotatingObject).rotate();
 
-        Exception exception = assertThrows(IllegalStateException.class, rotatingObject::getAngularVelocity);
-        assertEquals("Angular velocity must be positive.", exception.getMessage());
+        ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+        Rotate rotate = new Rotate(rotatingObject, exceptionHandler);
+
+        Exception exception = assertThrows(IllegalStateException.class, rotate::execute);
+        assertEquals("Rotation error", exception.getMessage());
+
+        verify(exceptionHandler, times(1)).handle(eq(rotate), eq(exception));
     }
 
     @Test
-    void testValidDirectionAndVelocity() {
-        RotatingObjectImpl rotatingObject = new RotatingObjectImpl(90, 45);
+    void testRotateWithZeroVelocityDoesNotChangeAngle() throws Exception {
+        Angle initialAngle = new Angle(90, 360);
+        Angle zeroVelocity = new Angle(0, 360);
+        RotatingObjectImpl rotatingObject = new RotatingObjectImpl(initialAngle, zeroVelocity);
 
-        assertEquals(90, rotatingObject.getDirection());
-        assertEquals(45, rotatingObject.getAngularVelocity());
+        ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+        Rotate rotate = new Rotate(rotatingObject, exceptionHandler);
 
-        rotatingObject.setDirection(180);
-        assertEquals(180, rotatingObject.getDirection());
+        rotate.execute();
+
+        assertEquals(new Angle(90, 360), rotatingObject.getAngle());
+
+        verifyNoInteractions(exceptionHandler);
     }
+
 }
