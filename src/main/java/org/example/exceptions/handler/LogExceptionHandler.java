@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.command.Command;
 import org.example.command.CommandQueue;
 import org.example.exceptions.LogExceptionCommand;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class LogExceptionHandler {
 
