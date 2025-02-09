@@ -1,19 +1,21 @@
 package org.example.exceptions;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.command.Command;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class LogException extends AbstractExceptionHandling {
+@RequiredArgsConstructor
+public class LogException implements Command {
 
-    public LogException(Command command, Exception exception) {
-        super(command, exception);
-    }
+    private final Command command;
+    private final Exception e;
 
     @Override
-    protected void handleSpecificLogic() {
-        logException();
+    public void execute() throws Exception {
+        log.error("Exception occurred during execution of command {}: {}", command.getClass().getSimpleName(), e.getMessage());
     }
+
 }

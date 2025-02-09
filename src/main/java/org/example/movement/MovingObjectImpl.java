@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.example.entity.Point;
 import org.example.entity.Vector;
+import org.example.exceptions.type.LocationNotSetException;
+import org.example.exceptions.type.VelocityNotSetException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,9 +29,9 @@ public class MovingObjectImpl implements MovingObject {
      * @return текущее положение объекта
      */
     @Override
-    public Point getLocation() {
+    public Point getLocation() throws LocationNotSetException {
         if (location == null) {
-            throw new IllegalStateException("Location is not set. Unable to get current location.");
+            throw new LocationNotSetException(getClass().getSimpleName(), "Location is not set. Unable to get current location.");
         }
         log.debug("Getting current location: {}", location);
         return location;
@@ -41,9 +43,9 @@ public class MovingObjectImpl implements MovingObject {
      * @return текущий вектор скорости
      */
     @Override
-    public Vector getVelocity() {
+    public Vector getVelocity() throws VelocityNotSetException {
         if (velocity == null) {
-            throw new IllegalStateException("Velocity is not set. Unable to get current velocity");
+            throw new VelocityNotSetException(getClass().getSimpleName(), "Velocity is not set. Unable to get current velocity");
         }
         log.debug("Getting current velocity: {}", velocity);
         return velocity;
@@ -55,9 +57,9 @@ public class MovingObjectImpl implements MovingObject {
      * @param newValue новое положение объекта
      */
     @Override
-    public void setLocation(Point newValue) {
+    public void setLocation(Point newValue) throws VelocityNotSetException {
         if (newValue == null) {
-            throw new IllegalStateException("New location cannot be null");
+            throw new VelocityNotSetException(getClass().getSimpleName(), "New location cannot be null");
         }
         log.debug("Setting new location: {}", newValue);
         this.location = newValue;

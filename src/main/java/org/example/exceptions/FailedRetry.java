@@ -1,19 +1,20 @@
 package org.example.exceptions;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.command.Command;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class FailedRetry extends AbstractExceptionHandling {
+@RequiredArgsConstructor
+public class FailedRetry implements Command {
 
-    public FailedRetry(Command command, Exception exception) {
-        super(command, exception);
-    }
+    private final Command command;
+    private final Exception e;
 
     @Override
-    protected void handleSpecificLogic() {
+    public void execute() throws Exception {
         log.error("Command failed twice and will not be retried: {}", command.getClass().getSimpleName());
     }
 }

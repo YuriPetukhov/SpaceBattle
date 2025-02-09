@@ -12,9 +12,9 @@ public class CheckFuelCommand implements Command {
     private final int requiredFuel;
 
     @Override
-    public void execute() throws Exception {
+    public void execute() throws NotEnoughFuelException {
         if (!fuelSystem.hasEnoughFuel(requiredFuel)) {
-            throw new NotEnoughFuelException(this, new Exception("Not enough fuel!"));
+            throw new NotEnoughFuelException(getClass().getSimpleName(), "Not enough fuel!");
         }
     }
 }

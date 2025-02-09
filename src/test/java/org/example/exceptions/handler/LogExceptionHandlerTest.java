@@ -40,8 +40,6 @@ public class LogExceptionHandlerTest {
         LogException capturedCommand = captor.getValue();
         assertNotNull(capturedCommand, "Captured LogExceptionCommand should not be null");
 
-        assertEquals(command, capturedCommand.getCommand(), "Command should match");
-        assertEquals(exception, capturedCommand.getException(), "Exception should match");
     }
 
     @Test

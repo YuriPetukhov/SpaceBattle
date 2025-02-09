@@ -27,8 +27,9 @@ class CheckFuelCommandTest {
         CheckFuelCommand checkFuelCommand = new CheckFuelCommand(fuelSystem, 10);
 
         NotEnoughFuelException exception = assertThrows(NotEnoughFuelException.class, checkFuelCommand::execute);
-        assertNotNull(exception.getCause());
-        assertEquals("Not enough fuel!", exception.getCause().getMessage());
+
+        assertEquals("Not enough fuel!", exception.getMessage());
+
     }
 
 

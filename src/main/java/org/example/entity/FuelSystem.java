@@ -1,13 +1,13 @@
 package org.example.entity;
 
 import lombok.Data;
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.example.command.Command;
 import org.example.exceptions.type.NotEnoughFuelException;
 
-@Getter
 @Data
-public class FuelSystem {
+@RequiredArgsConstructor
+public class FuelSystem implements Command {
     private int fuelAmount;
 
     public FuelSystem(int initialFuel) {
@@ -18,13 +18,18 @@ public class FuelSystem {
         return fuelAmount >= requiredFuel;
     }
 
-    public void burnFuel(int fuelConsumed, Command command) throws NotEnoughFuelException {
+    public void burnFuel(int fuelConsumed) throws NotEnoughFuelException {
         if (fuelAmount < fuelConsumed) {
-            throw new NotEnoughFuelException(command, new Exception("Not enough fuel to perform this action."));
+            throw new NotEnoughFuelException(getClass().getSimpleName(), "Not enough fuel");
         }
         fuelAmount -= fuelConsumed;
     }
     public void setFuelAmount(int fuelAmount) {
         this.fuelAmount = fuelAmount;
+    }
+
+    @Override
+    public void execute() throws Exception {
+
     }
 }

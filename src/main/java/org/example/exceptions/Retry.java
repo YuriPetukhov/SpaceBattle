@@ -1,24 +1,25 @@
 package org.example.exceptions;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.command.Command;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class Retry extends AbstractExceptionHandling {
+@RequiredArgsConstructor
+public class Retry implements Command {
 
-    public Retry(Command command, Exception exception) {
-        super(command, exception);
-    }
+    private final Command command;
+    private final Exception e;
 
     @Override
-    protected void handleSpecificLogic() {
+    public void execute() throws Exception {
         try {
-            log.info("Retrying command: {}", command.getClass().getSimpleName());
+            log.info("Retrying command {} after exception: {}", command.getClass().getSimpleName(), e.getMessage());
             command.execute();
         } catch (Exception e) {
-            log.error("Retry failed for command: {}. Exception: {}", command.getClass().getSimpleName(), e.getMessage());
+            log.error("Retry failed for command {}. Exception: {}", command.getClass().getSimpleName(), e.getMessage());
         }
     }
 }

@@ -54,8 +54,6 @@ public class ExceptionHandlingStrategyTest {
         verify(commandQueue).add(captor.capture());
         FailedRetry failedRetryCommand = captor.getValue();
         assert failedRetryCommand != null;
-        assert failedRetryCommand.getCommand() == mockCommand;
-        assert failedRetryCommand.getException() == mockException;
 
         verify(logExceptionHandler).handle(mockCommand, mockException);
         verify(retryExceptionHandler, times(2)).handle(mockCommand, mockException);

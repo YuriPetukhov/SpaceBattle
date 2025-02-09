@@ -3,6 +3,7 @@ package org.example.rotation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.entity.Angle;
+import org.example.exceptions.type.InvalidDenominatorException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,7 +34,7 @@ public class RotatingObjectImpl implements RotatingObject {
     /**
      * Обновляет угол, прибавляя угловую скорость.
      */
-    public void rotate() {
+    public void rotate() throws InvalidDenominatorException {
         angle.add(angularVelocity);
         log.info("New direction: {}", angle);
     }

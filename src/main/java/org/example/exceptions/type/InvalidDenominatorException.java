@@ -1,14 +1,12 @@
 package org.example.exceptions.type;
 
-import org.example.command.Command;
 import org.example.exceptions.AbstractExceptionHandling;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IllegalStateException extends AbstractExceptionHandling {
-    public IllegalStateException(Command command, Exception exception) {
-        super(command, exception);
-        initCause(exception);
+public class InvalidDenominatorException extends AbstractExceptionHandling {
+    public InvalidDenominatorException(String className, String message) {
+        super(className, message);
     }
 
     @Override

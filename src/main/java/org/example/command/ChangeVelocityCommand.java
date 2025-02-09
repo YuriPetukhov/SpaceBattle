@@ -19,7 +19,7 @@ public class ChangeVelocityCommand implements Command {
             velocity.setX(velocity.getX() + deltaX);
             velocity.setY(velocity.getY() + deltaY);
         } catch (Exception e) {
-            exceptionHandler.handle(this, e);
+            exceptionHandler.handle(getClass().getSimpleName(), e);
         }
     }
 }

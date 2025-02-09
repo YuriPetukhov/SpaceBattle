@@ -23,7 +23,7 @@ public class RotateAndUpdateVelocityCommand implements Command {
             velocity.setX(newX);
             velocity.setY(newY);
         } catch (Exception e) {
-            exceptionHandler.handle(this, e);
+            exceptionHandler.handle(getClass().getSimpleName(), e);
         }
     }
 }

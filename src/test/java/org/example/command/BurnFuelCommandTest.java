@@ -1,6 +1,7 @@
 package org.example.command;
 
 import org.example.entity.FuelSystem;
+import org.example.exceptions.handler.ExceptionHandler;
 import org.example.exceptions.type.NotEnoughFuelException;
 import org.junit.jupiter.api.Test;
 
@@ -10,28 +11,33 @@ import static org.mockito.Mockito.*;
 class BurnFuelCommandTest {
 
     @Test
-    void testExecuteWhenFuelIsSufficient() throws NotEnoughFuelException {
+    void testExecuteWhenFuelIsSufficient() throws Exception {
         FuelSystem fuelSystem = mock(FuelSystem.class);
-        BurnFuelCommand burnFuelCommand = new BurnFuelCommand(fuelSystem, 10);
+        ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+        BurnFuelCommand burnFuelCommand = new BurnFuelCommand(fuelSystem, 10, exceptionHandler);
 
-        doNothing().when(fuelSystem).burnFuel(10, burnFuelCommand);
+        doNothing().when(fuelSystem).burnFuel(10);
 
         burnFuelCommand.execute();
 
-        verify(fuelSystem, times(1)).burnFuel(10, burnFuelCommand);
+        verify(fuelSystem, times(1)).burnFuel(10);
+        verify(exceptionHandler, never()).handle(anyString(), any(Exception.class));
     }
 
     @Test
-    void testExecuteWhenFuelIsNotSufficient() throws NotEnoughFuelException {
+    void testExecuteWhenFuelIsNotSufficient() throws Exception {
         FuelSystem fuelSystem = mock(FuelSystem.class);
-        BurnFuelCommand burnFuelCommand = new BurnFuelCommand(fuelSystem, 10);
+        ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+        BurnFuelCommand burnFuelCommand = new BurnFuelCommand(fuelSystem, 10, exceptionHandler);
 
-        doThrow(new NotEnoughFuelException(burnFuelCommand, new Exception("Not enough fuel!")))
-                .when(fuelSystem).burnFuel(10, burnFuelCommand);
+        doThrow(new NotEnoughFuelException("BurnFuelCommand", "Not enough fuel!"))
+                .when(fuelSystem).burnFuel(10);
 
-        NotEnoughFuelException exception = assertThrows(NotEnoughFuelException.class, burnFuelCommand::execute);
-        assertNotNull(exception.getCause());
-        assertEquals("Not enough fuel!", exception.getCause().getMessage());
+        burnFuelCommand.execute();
+
+        verify(fuelSystem, times(1)).burnFuel(10);
+
+        verify(exceptionHandler, times(1)).handle(eq("BurnFuelCommand"), any(NotEnoughFuelException.class));
     }
 
 }

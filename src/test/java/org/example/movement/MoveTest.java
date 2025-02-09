@@ -4,6 +4,8 @@ import org.example.entity.Point;
 import org.example.entity.Vector;
 import org.example.entity.Velocity;
 import org.example.exceptions.handler.ExceptionHandler;
+import org.example.exceptions.type.LocationNotSetException;
+import org.example.exceptions.type.VelocityNotSetException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +42,7 @@ class MoveTest {
 
             move.execute();
 
-            verify(exceptionHandler, times(1)).handle(eq(move), any(IllegalStateException.class));
+            verify(exceptionHandler, times(1)).handle(eq(move.getClass().getSimpleName()), any(LocationNotSetException.class));
         }
 
         @Test
@@ -51,7 +53,7 @@ class MoveTest {
 
             move.execute();
 
-            verify(exceptionHandler, times(1)).handle(eq(move), any(IllegalStateException.class));
+            verify(exceptionHandler, times(1)).handle(eq(move.getClass().getSimpleName()), any(VelocityNotSetException.class));
         }
 
         @Test
@@ -66,7 +68,7 @@ class MoveTest {
 
             move.execute();
 
-            verify(exceptionHandler, times(1)).handle(eq(move), any(IllegalStateException.class));
+            verify(exceptionHandler, times(1)).handle(eq(move.getClass().getSimpleName()), any(IllegalStateException.class));
         }
 
 }

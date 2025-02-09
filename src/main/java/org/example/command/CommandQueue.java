@@ -25,20 +25,17 @@ public class CommandQueue {
     }
 
     private void process() throws Exception {
-        while (true) {
+        while (!queue.isEmpty()) {
             Command command;
             synchronized (this) {
-                if (queue.isEmpty()) {
-                    isProcessing = false;
-                    return;
-                }
                 command = queue.poll();
             }
 
             try {
+                assert command != null;
                 command.execute();
             } catch (Exception e) {
-                exceptionHandler.handle(command, e);
+                exceptionHandler.handle(command.getClass().getSimpleName(), e);
             }
         }
     }

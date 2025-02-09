@@ -36,7 +36,7 @@ class ChangeVelocityCommandTest {
 
         command.execute();
 
-        verify(exceptionHandler, times(1)).handle(eq(command), any(RuntimeException.class));
+        verify(exceptionHandler, times(1)).handle(eq(command.getClass().getSimpleName()), any(RuntimeException.class));
     }
 
 

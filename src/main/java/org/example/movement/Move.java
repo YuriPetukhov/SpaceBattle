@@ -24,7 +24,7 @@ public class Move implements Command {
             Point newLocation = Point.plus(movingObject.getLocation(), movingObject.getVelocity());
             movingObject.setLocation(newLocation);
         } catch (Exception e) {
-            exceptionHandler.handle(this, e);
+            exceptionHandler.handle(getClass().getSimpleName(), e);
         }
     }
 }

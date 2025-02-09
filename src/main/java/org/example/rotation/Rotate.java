@@ -22,7 +22,7 @@ public class Rotate implements Command {
         try {
             rotatingObject.rotate();
         } catch (Exception e) {
-            exceptionHandler.handle(this, e);
+            exceptionHandler.handle(getClass().getSimpleName(), e);
         }
     }
 }

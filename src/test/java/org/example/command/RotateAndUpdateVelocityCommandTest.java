@@ -66,7 +66,7 @@ public class RotateAndUpdateVelocityCommandTest {
 
         command.execute();
 
-        verify(exceptionHandler, times(1)).handle(eq(command), any(IllegalArgumentException.class));
+        verify(exceptionHandler, times(1)).handle(eq(command.getClass().getSimpleName()), any(IllegalArgumentException.class));
     }
 
 

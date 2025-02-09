@@ -2,6 +2,7 @@ package org.example.rotation;
 
 import org.example.entity.Angle;
 import org.example.exceptions.handler.ExceptionHandler;
+import org.example.exceptions.type.InvalidDenominatorException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,11 +43,11 @@ class RotateTest {
     }
 
     @Test
-    void testRotateWithDifferentDenominatorsThrowsException() {
+    void testRotateWithDifferentDenominatorsThrowsException() throws InvalidDenominatorException {
         Angle initialAngle = new Angle(90, 360);
         Angle angularVelocity = new Angle(1, 180);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(InvalidDenominatorException.class, () -> {
             initialAngle.add(angularVelocity);
         });
 
@@ -63,7 +64,7 @@ class RotateTest {
 
         rotate.execute();
 
-        verify(exceptionHandler, times(1)).handle(eq(rotate), any(IllegalStateException.class));
+        verify(exceptionHandler, times(1)).handle(eq(rotate.getClass().getSimpleName()), any(IllegalStateException.class));
     }
 
     @Test

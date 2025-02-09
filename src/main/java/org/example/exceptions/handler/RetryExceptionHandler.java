@@ -10,10 +10,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class RetryExceptionHandler implements Handler {
+public class RetryExceptionHandler implements CommandHandler {
 
     private final CommandQueue commandQueue;
 
+    @Override
     public void handle(Command command, Exception e) throws Exception {
         Retry retryCommand = new Retry(command, e);
         commandQueue.add(retryCommand);

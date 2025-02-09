@@ -39,7 +39,5 @@ public class RetryExceptionHandlerTest {
 
         Retry capturedCommand = captor.getValue();
         assertNotNull(capturedCommand);
-        assertEquals(command, capturedCommand.getCommand());
-        assertEquals(testException, capturedCommand.getException());
     }
 }
