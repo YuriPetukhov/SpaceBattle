@@ -32,7 +32,7 @@ public class RetryExceptionHandlerTest {
     public void shouldHandleExceptionAndAddRetryCommandToQueue() throws Exception {
         Exception testException = new RuntimeException("Test exception");
 
-        retryExceptionHandler.handleException(command, testException);
+        retryExceptionHandler.handle(command, testException);
 
         ArgumentCaptor<Retry> captor = ArgumentCaptor.forClass(Retry.class);
         verify(commandQueue).add(captor.capture());

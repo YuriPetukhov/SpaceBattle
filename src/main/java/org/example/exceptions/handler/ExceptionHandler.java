@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ExceptionHandler {
+public class ExceptionHandler implements Handler {
 
     private final ExceptionRegistry exceptionRegistry;
 

@@ -1,9 +1,11 @@
 package org.example.entity;
 
 import lombok.Data;
+import lombok.Getter;
 import org.example.command.Command;
 import org.example.exceptions.type.NotEnoughFuelException;
 
+@Getter
 @Data
 public class FuelSystem {
     private int fuelAmount;
@@ -22,12 +24,6 @@ public class FuelSystem {
         }
         fuelAmount -= fuelConsumed;
     }
-
-
-    public int getFuelAmount() {
-        return fuelAmount;
-    }
-
     public void setFuelAmount(int fuelAmount) {
         this.fuelAmount = fuelAmount;
     }

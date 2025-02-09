@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.command.Command;
 import org.example.command.CommandQueue;
 import org.example.exceptions.FailedRetry;
+import org.example.exceptions.handler.Handler;
 import org.example.exceptions.handler.LogExceptionHandler;
 import org.example.exceptions.handler.RetryExceptionHandler;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ExceptionHandlingStrategy {
+public class ExceptionHandlingStrategy implements Handler {
 
     private static final int MAX_RETRIES = 2;
 
@@ -22,16 +23,16 @@ public class ExceptionHandlingStrategy {
 
     private int retryCount = 0;
 
-    public void handleException(Command command, Exception exception) throws Exception {
+    public void handle(Command command, Exception e) throws Exception {
         if (retryCount < MAX_RETRIES) {
             log.info("Attempt {}: Retrying command: {}", retryCount + 1, command.getClass().getSimpleName());
-            retryExceptionHandler.handleException(command, exception);
+            retryExceptionHandler.handle(command, e);
             retryCount++;
         } else {
             log.error("Retry failed for command: {} after {} attempts. Logging exception.", command.getClass().getSimpleName(), MAX_RETRIES);
-            FailedRetry failedRetryCommand = new FailedRetry(command, exception);
+            FailedRetry failedRetryCommand = new FailedRetry(command, e);
             commandQueue.add(failedRetryCommand);
-            logExceptionHandler.handleException(command, exception);
+            logExceptionHandler.handle(command, e);
             retryCount = 0;
         }
     }

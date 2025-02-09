@@ -43,12 +43,12 @@ public class ExceptionHandlingStrategyTest {
 
     @Test
     public void shouldRetryTwoTimesBeforeLoggingException() throws Exception {
-        exceptionHandlingStrategy.handleException(mockCommand, mockException);
-        exceptionHandlingStrategy.handleException(mockCommand, mockException);
+        exceptionHandlingStrategy.handle(mockCommand, mockException);
+        exceptionHandlingStrategy.handle(mockCommand, mockException);
 
-        verify(retryExceptionHandler, times(2)).handleException(mockCommand, mockException);
+        verify(retryExceptionHandler, times(2)).handle(mockCommand, mockException);
 
-        exceptionHandlingStrategy.handleException(mockCommand, mockException);
+        exceptionHandlingStrategy.handle(mockCommand, mockException);
 
         ArgumentCaptor<FailedRetry> captor = ArgumentCaptor.forClass(FailedRetry.class);
         verify(commandQueue).add(captor.capture());
@@ -57,26 +57,26 @@ public class ExceptionHandlingStrategyTest {
         assert failedRetryCommand.getCommand() == mockCommand;
         assert failedRetryCommand.getException() == mockException;
 
-        verify(logExceptionHandler).handleException(mockCommand, mockException);
-        verify(retryExceptionHandler, times(2)).handleException(mockCommand, mockException);
+        verify(logExceptionHandler).handle(mockCommand, mockException);
+        verify(retryExceptionHandler, times(2)).handle(mockCommand, mockException);
     }
 
     @Test
     public void shouldNotRetryAfterMaxRetries() throws Exception {
-        exceptionHandlingStrategy.handleException(mockCommand, mockException);
-        exceptionHandlingStrategy.handleException(mockCommand, mockException);
-        exceptionHandlingStrategy.handleException(mockCommand, mockException);
+        exceptionHandlingStrategy.handle(mockCommand, mockException);
+        exceptionHandlingStrategy.handle(mockCommand, mockException);
+        exceptionHandlingStrategy.handle(mockCommand, mockException);
 
-        verify(retryExceptionHandler, times(2)).handleException(mockCommand, mockException);
-        verify(logExceptionHandler).handleException(mockCommand, mockException);
+        verify(retryExceptionHandler, times(2)).handle(mockCommand, mockException);
+        verify(logExceptionHandler).handle(mockCommand, mockException);
     }
 
     @Test
     public void shouldNotAddFailedRetryCommandIfNotMaxRetries() throws Exception {
-        exceptionHandlingStrategy.handleException(mockCommand, mockException);
+        exceptionHandlingStrategy.handle(mockCommand, mockException);
 
-        verify(retryExceptionHandler).handleException(mockCommand, mockException);
+        verify(retryExceptionHandler).handle(mockCommand, mockException);
         verify(commandQueue, never()).add(Mockito.any(FailedRetry.class));
-        verify(logExceptionHandler, never()).handleException(mockCommand, mockException);
+        verify(logExceptionHandler, never()).handle(mockCommand, mockException);
     }
 }

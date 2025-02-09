@@ -10,12 +10,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class LogExceptionHandler {
+public class LogExceptionHandler implements Handler {
 
     private final CommandQueue commandQueue;
 
-    public void handleException(Command command, Exception exception) throws Exception {
-        LogException logCommand = new LogException(command, exception);
+    @Override
+    public void handle(Command command, Exception e) throws Exception {
+        LogException logCommand = new LogException(command, e);
         commandQueue.add(logCommand);
     }
 }

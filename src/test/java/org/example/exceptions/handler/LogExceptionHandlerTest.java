@@ -32,7 +32,7 @@ public class LogExceptionHandlerTest {
         Command command = mock(Command.class);
         Exception exception = new RuntimeException("Test exception");
 
-        logExceptionHandler.handleException(command, exception);
+        logExceptionHandler.handle(command, exception);
 
         ArgumentCaptor<LogException> captor = ArgumentCaptor.forClass(LogException.class);
         verify(commandQueue).add(captor.capture());
@@ -51,7 +51,7 @@ public class LogExceptionHandlerTest {
 
         doNothing().when(commandQueue).add(any(LogException.class));
 
-        logExceptionHandler.handleException(command, exception);
+        logExceptionHandler.handle(command, exception);
 
         verify(commandQueue).add(any(LogException.class));
     }
