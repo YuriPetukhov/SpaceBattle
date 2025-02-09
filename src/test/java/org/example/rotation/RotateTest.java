@@ -61,10 +61,9 @@ class RotateTest {
         ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
         Rotate rotate = new Rotate(rotatingObject, exceptionHandler);
 
-        Exception exception = assertThrows(IllegalStateException.class, rotate::execute);
-        assertEquals("Rotation error", exception.getMessage());
+        rotate.execute();
 
-        verify(exceptionHandler, times(1)).handle(eq(rotate), eq(exception));
+        verify(exceptionHandler, times(1)).handle(eq(rotate), any(IllegalStateException.class));
     }
 
     @Test

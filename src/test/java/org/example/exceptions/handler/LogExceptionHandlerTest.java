@@ -2,7 +2,7 @@ package org.example.exceptions.handler;
 
 import org.example.command.Command;
 import org.example.command.CommandQueue;
-import org.example.exceptions.LogExceptionCommand;
+import org.example.exceptions.LogException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,10 +34,10 @@ public class LogExceptionHandlerTest {
 
         logExceptionHandler.handleException(command, exception);
 
-        ArgumentCaptor<LogExceptionCommand> captor = ArgumentCaptor.forClass(LogExceptionCommand.class);
+        ArgumentCaptor<LogException> captor = ArgumentCaptor.forClass(LogException.class);
         verify(commandQueue).add(captor.capture());
 
-        LogExceptionCommand capturedCommand = captor.getValue();
+        LogException capturedCommand = captor.getValue();
         assertNotNull(capturedCommand, "Captured LogExceptionCommand should not be null");
 
         assertEquals(command, capturedCommand.getCommand(), "Command should match");
@@ -49,10 +49,10 @@ public class LogExceptionHandlerTest {
         Command command = mock(Command.class);
         Exception exception = new RuntimeException("Test exception");
 
-        doNothing().when(commandQueue).add(any(LogExceptionCommand.class));
+        doNothing().when(commandQueue).add(any(LogException.class));
 
         logExceptionHandler.handleException(command, exception);
 
-        verify(commandQueue).add(any(LogExceptionCommand.class));
+        verify(commandQueue).add(any(LogException.class));
     }
 }

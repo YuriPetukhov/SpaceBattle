@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class RetryCommand extends AbstractExceptionHandlingCommand {
+public class Retry extends AbstractExceptionHandling {
 
-    public RetryCommand(Command command, Exception exception) {
+    public Retry(Command command, Exception exception) {
         super(command, exception);
     }
 

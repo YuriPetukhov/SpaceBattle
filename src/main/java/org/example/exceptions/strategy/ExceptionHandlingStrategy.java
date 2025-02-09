@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.command.Command;
 import org.example.command.CommandQueue;
-import org.example.exceptions.FailedRetryCommand;
+import org.example.exceptions.FailedRetry;
 import org.example.exceptions.handler.LogExceptionHandler;
 import org.example.exceptions.handler.RetryExceptionHandler;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ public class ExceptionHandlingStrategy {
             retryCount++;
         } else {
             log.error("Retry failed for command: {} after {} attempts. Logging exception.", command.getClass().getSimpleName(), MAX_RETRIES);
-            FailedRetryCommand failedRetryCommand = new FailedRetryCommand(command, exception);
+            FailedRetry failedRetryCommand = new FailedRetry(command, exception);
             commandQueue.add(failedRetryCommand);
             logExceptionHandler.handleException(command, exception);
             retryCount = 0;

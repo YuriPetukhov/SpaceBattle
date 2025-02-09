@@ -16,7 +16,7 @@ public class LogExceptionCommandTest {
     @Test
     void testGetExceptionType_ReturnsCorrectType() {
         Exception exception = new IllegalArgumentException("Test exception");
-        LogExceptionCommand commandToTest = new LogExceptionCommand(command, exception);
+        LogException commandToTest = new LogException(command, exception);
 
         Class<? extends Exception> result = commandToTest.getExceptionType();
 

@@ -1,15 +1,14 @@
 package org.example.exceptions.type;
 
 import org.example.command.Command;
-import org.example.exceptions.AbstractExceptionHandlingCommand;
+import org.example.exceptions.AbstractExceptionHandling;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IllegalArgumentExceptionHandlingCommand extends AbstractExceptionHandlingCommand {
-
-
-    public IllegalArgumentExceptionHandlingCommand(Command command, Exception exception) {
+public class NotEnoughFuelException extends AbstractExceptionHandling {
+    public NotEnoughFuelException(Command command, Exception exception) {
         super(command, exception);
+        initCause(exception);
     }
 
     @Override

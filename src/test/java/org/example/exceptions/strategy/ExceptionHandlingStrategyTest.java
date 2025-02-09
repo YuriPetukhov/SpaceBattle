@@ -1,7 +1,7 @@
 package org.example.exceptions.strategy;
 import org.example.command.Command;
 import org.example.command.CommandQueue;
-import org.example.exceptions.FailedRetryCommand;
+import org.example.exceptions.FailedRetry;
 import org.example.exceptions.handler.LogExceptionHandler;
 import org.example.exceptions.handler.RetryExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,9 +50,9 @@ public class ExceptionHandlingStrategyTest {
 
         exceptionHandlingStrategy.handleException(mockCommand, mockException);
 
-        ArgumentCaptor<FailedRetryCommand> captor = ArgumentCaptor.forClass(FailedRetryCommand.class);
+        ArgumentCaptor<FailedRetry> captor = ArgumentCaptor.forClass(FailedRetry.class);
         verify(commandQueue).add(captor.capture());
-        FailedRetryCommand failedRetryCommand = captor.getValue();
+        FailedRetry failedRetryCommand = captor.getValue();
         assert failedRetryCommand != null;
         assert failedRetryCommand.getCommand() == mockCommand;
         assert failedRetryCommand.getException() == mockException;
@@ -76,7 +76,7 @@ public class ExceptionHandlingStrategyTest {
         exceptionHandlingStrategy.handleException(mockCommand, mockException);
 
         verify(retryExceptionHandler).handleException(mockCommand, mockException);
-        verify(commandQueue, never()).add(Mockito.any(FailedRetryCommand.class));
+        verify(commandQueue, never()).add(Mockito.any(FailedRetry.class));
         verify(logExceptionHandler, never()).handleException(mockCommand, mockException);
     }
 }

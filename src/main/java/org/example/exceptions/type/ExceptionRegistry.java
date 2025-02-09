@@ -2,7 +2,7 @@ package org.example.exceptions.type;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.command.Command;
-import org.example.exceptions.ExceptionHandlingCommand;
+import org.example.exceptions.ExceptionHandling;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,18 +14,18 @@ import java.util.Map;
 @Component
 public class ExceptionRegistry {
 
-    private final Map<Class<? extends Exception>, ExceptionHandlingCommand> exceptionActionMap =
+    private final Map<Class<? extends Exception>, ExceptionHandling> exceptionActionMap =
             new HashMap<>();
     @Autowired
-    public ExceptionRegistry(List<ExceptionHandlingCommand> exceptionHandlingCommands) {
-        for (ExceptionHandlingCommand exceptionHandlingCommand : exceptionHandlingCommands) {
-            exceptionActionMap.put(exceptionHandlingCommand.getExceptionType(), exceptionHandlingCommand);
+    public ExceptionRegistry(List<ExceptionHandling> exceptionHandlings) {
+        for (ExceptionHandling exceptionHandling : exceptionHandlings) {
+            exceptionActionMap.put(exceptionHandling.getExceptionType(), exceptionHandling);
         }
     }
 
     public void handleException(Command command, Exception e) throws Exception {
-        ExceptionHandlingCommand exceptionHandlingCommand = exceptionActionMap.getOrDefault(
-                e.getClass(), new GeneralExceptionHandlingCommand(command, e));
-        exceptionHandlingCommand.execute();
+        ExceptionHandling exceptionHandling = exceptionActionMap.getOrDefault(
+                e.getClass(), new GeneralException(command, e));
+        exceptionHandling.execute();
     }
 }

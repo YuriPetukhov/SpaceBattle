@@ -19,7 +19,7 @@ public class RetryCommandTest {
     private Command command;
 
     @InjectMocks
-    private RetryCommand retryCommand;
+    private Retry retryCommand;
 
     @Test
     public void shouldThrowExceptionIfRetryFails() throws Exception {
@@ -35,7 +35,7 @@ public class RetryCommandTest {
     public void shouldRetryOnlyOnceIfCommandFails() throws Exception {
 
         Exception testException = new RuntimeException("Test exception");
-        retryCommand = new RetryCommand(command, testException);
+        retryCommand = new Retry(command, testException);
 
         doThrow(new RuntimeException("Test exception")).doNothing().when(command).execute();
 

@@ -8,7 +8,7 @@ import org.example.command.Command;
 @Slf4j
 @Getter
 @RequiredArgsConstructor
-public abstract class AbstractExceptionHandlingCommand implements ExceptionHandlingCommand {
+public abstract class AbstractExceptionHandling extends Exception implements ExceptionHandling {
 
     protected final Command command;
     private final Exception exception;

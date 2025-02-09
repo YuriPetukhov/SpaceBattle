@@ -20,12 +20,9 @@ public class Rotate implements Command {
     @Override
     public void execute() throws Exception {
         try {
-            log.info("Rotating object: {}", rotatingObject.getAngle());
             rotatingObject.rotate();
-            log.info("Object rotated to: {}", rotatingObject.getAngle());
         } catch (Exception e) {
             exceptionHandler.handle(this, e);
-            throw e;
         }
     }
 }

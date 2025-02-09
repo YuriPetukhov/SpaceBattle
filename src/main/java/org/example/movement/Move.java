@@ -21,14 +21,10 @@ public class Move implements Command {
     @Override
     public void execute() throws Exception {
         try {
-            log.info("Starting movement for object: {}", movingObject);
             Point newLocation = Point.plus(movingObject.getLocation(), movingObject.getVelocity());
-            log.debug("New location calculated: {}", newLocation);
             movingObject.setLocation(newLocation);
-            log.info("Object moved to new location: {}", newLocation);
         } catch (Exception e) {
             exceptionHandler.handle(this, e);
-            throw e;
         }
     }
 }

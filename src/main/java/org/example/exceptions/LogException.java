@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class LogExceptionCommand extends AbstractExceptionHandlingCommand {
+public class LogException extends AbstractExceptionHandling {
 
-    public LogExceptionCommand(Command command, Exception exception) {
+    public LogException(Command command, Exception exception) {
         super(command, exception);
     }
 

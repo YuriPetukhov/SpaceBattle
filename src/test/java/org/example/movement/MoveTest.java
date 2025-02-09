@@ -11,71 +11,62 @@ import static org.mockito.Mockito.*;
 
 class MoveTest {
 
-    @Test
-    void testMove() throws Exception {
-        Point initialLocation = new Point(12, 5);
+        @Test
+        void testMove() throws Exception {
+            Point initialLocation = new Point(12, 5);
 
-        Velocity velocity = new Velocity(-7, 3);
-        Vector vector = new Vector(velocity);
+            Velocity velocity = new Velocity(-7, 3);
+            Vector vector = new Vector(velocity);
 
-        MovingObjectImpl movingObject = new MovingObjectImpl(initialLocation, vector);
+            MovingObjectImpl movingObject = new MovingObjectImpl(initialLocation, vector);
 
-        ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+            ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
 
-        Move move = new Move(movingObject, exceptionHandler);
-        move.execute();
-
-        Point newLocation = movingObject.getLocation();
-        assertEquals(5, newLocation.getX());
-        assertEquals(8, newLocation.getY());
-
-        verifyNoInteractions(exceptionHandler);
-    }
-
-    @Test
-    void testMoveThrowsExceptionWhenLocationIsUnreadable() throws Exception {
-        ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
-
-        MovingObjectImpl movingObject = new MovingObjectImpl(null, new Vector(new Velocity(1, 1)));
-
-        Move move = new Move(movingObject, exceptionHandler);
-
-        try {
+            Move move = new Move(movingObject, exceptionHandler);
             move.execute();
-            fail("Expected IllegalStateException not thrown");
-        } catch (IllegalStateException e) {
-            verify(exceptionHandler, times(1)).handle(eq(move), eq(e));
+
+            Point newLocation = movingObject.getLocation();
+            assertEquals(5, newLocation.getX());
+            assertEquals(8, newLocation.getY());
+
+            verifyNoInteractions(exceptionHandler);
         }
-    }
-    @Test
-    void testMoveThrowsExceptionWhenVelocityIsUnreadable() throws Exception {
-        ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
-        MovingObjectImpl movingObject = new MovingObjectImpl(new Point(0, 0), null);
 
-        Move move = new Move(movingObject, exceptionHandler);
+        @Test
+        void testMoveThrowsExceptionWhenLocationIsUnreadable() throws Exception {
+            ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+            MovingObjectImpl movingObject = new MovingObjectImpl(null, new Vector(new Velocity(1, 1)));
+            Move move = new Move(movingObject, exceptionHandler);
 
-        Exception exception = assertThrows(IllegalStateException.class, move::execute);
-        assertEquals("Velocity is not set. Unable to get current velocity", exception.getMessage());
-        verify(exceptionHandler, times(1)).handle(eq(move), eq(exception));
-    }
+            move.execute();
 
-    @Test
-    void testMoveThrowsExceptionWhenLocationIsUnwritable() {
-        ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
-        Point initialLocation = new Point(0, 0);
-        Velocity velocity = new Velocity(1, 1);
-        Vector vector = new Vector(velocity);
+            verify(exceptionHandler, times(1)).handle(eq(move), any(IllegalStateException.class));
+        }
 
-        MovingObject movingObject = new MovingObjectImpl(initialLocation, vector) {
-            @Override
-            public void setLocation(Point newValue) {
-                throw new IllegalStateException("Cannot set location");
-            }
-        };
+        @Test
+        void testMoveThrowsExceptionWhenVelocityIsUnreadable() throws Exception {
+            ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+            MovingObjectImpl movingObject = new MovingObjectImpl(new Point(0, 0), null);
+            Move move = new Move(movingObject, exceptionHandler);
 
-        Move move = new Move(movingObject, exceptionHandler);
+            move.execute();
 
-        Exception exception = assertThrows(IllegalStateException.class, move::execute);
-        assertEquals("Cannot set location", exception.getMessage());
-    }
+            verify(exceptionHandler, times(1)).handle(eq(move), any(IllegalStateException.class));
+        }
+
+        @Test
+        void testMoveThrowsExceptionWhenLocationIsUnwritable() throws Exception {
+            ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+            MovingObject movingObject = mock(MovingObject.class);
+            when(movingObject.getLocation()).thenReturn(new Point(0, 0));
+            when(movingObject.getVelocity()).thenReturn(new Vector(new Velocity(1, 1)));
+            doThrow(new IllegalStateException("Cannot set location")).when(movingObject).setLocation(any());
+
+            Move move = new Move(movingObject, exceptionHandler);
+
+            move.execute();
+
+            verify(exceptionHandler, times(1)).handle(eq(move), any(IllegalStateException.class));
+        }
+
 }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.command.Command;
 import org.example.command.CommandQueue;
-import org.example.exceptions.RetryCommand;
+import org.example.exceptions.Retry;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -15,7 +15,7 @@ public class RetryExceptionHandler {
     private final CommandQueue commandQueue;
 
     public void handleException(Command command, Exception exception) throws Exception {
-        RetryCommand retryCommand = new RetryCommand(command, exception);
+        Retry retryCommand = new Retry(command, exception);
         commandQueue.add(retryCommand);
     }
 }

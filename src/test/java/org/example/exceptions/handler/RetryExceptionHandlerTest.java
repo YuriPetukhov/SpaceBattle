@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.example.command.Command;
 import org.example.command.CommandQueue;
-import org.example.exceptions.RetryCommand;
+import org.example.exceptions.Retry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,10 +34,10 @@ public class RetryExceptionHandlerTest {
 
         retryExceptionHandler.handleException(command, testException);
 
-        ArgumentCaptor<RetryCommand> captor = ArgumentCaptor.forClass(RetryCommand.class);
+        ArgumentCaptor<Retry> captor = ArgumentCaptor.forClass(Retry.class);
         verify(commandQueue).add(captor.capture());
 
-        RetryCommand capturedCommand = captor.getValue();
+        Retry capturedCommand = captor.getValue();
         assertNotNull(capturedCommand);
         assertEquals(command, capturedCommand.getCommand());
         assertEquals(testException, capturedCommand.getException());
