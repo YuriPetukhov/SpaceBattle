@@ -3,34 +3,44 @@ package org.example.command;
 import static org.mockito.Mockito.*;
 
 import org.example.entity.Angle;
+import org.example.entity.Vector;
 import org.example.entity.Velocity;
 import org.example.exceptions.handler.ExceptionHandler;
+import org.example.exceptions.type.VelocityNotSetException;
+import org.example.movement.Move;
+import org.example.movement.MovingObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
 
-public class RotateAndUpdateVelocityCommandTest {
-
-    @Mock
-    private Velocity velocity;
-
-    @Mock
-    private Angle angle;
-
-    @Mock
-    private ExceptionHandler exceptionHandler;
-    @InjectMocks
+class RotateAndUpdateVelocityCommandTest {
     private RotateAndUpdateVelocityCommand command;
+    private MovingObject movingObject;
+    private Velocity velocity;
+    private Vector vector;
+    private Angle angle;
+    private ExceptionHandler exceptionHandler;
+    private Move moveCommand;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
+    void setUp() throws VelocityNotSetException {
+        movingObject = mock(MovingObject.class);
+        velocity = mock(Velocity.class);
+        vector = mock(Vector.class);
+        angle = mock(Angle.class);
+        exceptionHandler = mock(ExceptionHandler.class);
+        moveCommand = mock(Move.class);
+
+        when(vector.getVelocity()).thenReturn(velocity);
+        when(velocity.getX()).thenReturn(10);
+        when(velocity.getY()).thenReturn(0);
+
+        when(movingObject.getVelocity()).thenReturn(vector);
+
+        command = new RotateAndUpdateVelocityCommand(movingObject, angle, moveCommand, exceptionHandler);
     }
 
     @Test
-    public void testExecute_Rotation() throws Exception {
-        when(velocity.getX()).thenReturn(10);
-        when(velocity.getY()).thenReturn(0);
+    void testExecute_NormalRotation() throws Exception {
         when(angle.getD()).thenReturn(1);
         when(angle.getN()).thenReturn(1);
 
@@ -38,12 +48,12 @@ public class RotateAndUpdateVelocityCommandTest {
 
         verify(velocity).setX(10);
         verify(velocity).setY(0);
+
+        verify(moveCommand).execute();
     }
 
     @Test
-    public void testExecute_RotationWithNegativeAngle() throws Exception {
-        when(velocity.getX()).thenReturn(10);
-        when(velocity.getY()).thenReturn(0);
+    void testExecute_RotationWithNegativeAngle() throws Exception {
         when(angle.getD()).thenReturn(1);
         when(angle.getN()).thenReturn(2);
 
@@ -51,13 +61,14 @@ public class RotateAndUpdateVelocityCommandTest {
 
         verify(velocity).setX(-10);
         verify(velocity).setY(0);
+
+        verify(moveCommand).execute();
     }
 
     @Test
-    void testExecute_whenExceptionOccurs() throws Exception {
+    void testExecute_WhenExceptionOccurs() throws Exception {
         when(velocity.getX()).thenReturn(10);
         when(velocity.getY()).thenReturn(0);
-
         when(angle.getD()).thenReturn(1);
         when(angle.getN()).thenReturn(2);
 
@@ -66,8 +77,13 @@ public class RotateAndUpdateVelocityCommandTest {
 
         command.execute();
 
-        verify(exceptionHandler, times(1)).handle(eq(command.getClass().getSimpleName()), any(IllegalArgumentException.class));
+        verify(exceptionHandler).handle(eq("RotateAndUpdateVelocityCommand"), any(IllegalArgumentException.class));
     }
 
-
+    @Test
+    void testExecute_WhenNullPointerExceptionOccurs() throws Exception {
+        when(movingObject.getVelocity()).thenReturn(null);
+        command.execute();
+        verify(exceptionHandler).handle(eq("RotateAndUpdateVelocityCommand"), any(NullPointerException.class));
+    }
 }
