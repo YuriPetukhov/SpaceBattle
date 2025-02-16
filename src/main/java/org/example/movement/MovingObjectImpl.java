@@ -2,8 +2,10 @@ package org.example.movement;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.example.entity.Angle;
 import org.example.entity.Point;
 import org.example.entity.Vector;
+import org.example.exceptions.type.InvalidDenominatorException;
 import org.example.exceptions.type.LocationNotSetException;
 import org.example.exceptions.type.VelocityNotSetException;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,7 @@ public class MovingObjectImpl implements MovingObject {
 
     private Point location;
     private Vector velocity;
+    private Angle angle;
 
     /**
      * Возвращает текущее положение объекта.
@@ -49,6 +52,23 @@ public class MovingObjectImpl implements MovingObject {
         }
         log.debug("Getting current velocity: {}", velocity);
         return velocity;
+    }
+
+    @Override
+    public Angle getAngle() throws InvalidDenominatorException {
+        if (angle == null) {
+            return new Angle(0, 360);
+        }
+        log.debug("Getting current angle: {}", angle);
+        return angle;
+    }
+
+    @Override
+    public void setAngle(Angle newAngle) {
+        if (newAngle != null) {
+            this.angle = newAngle;
+        }
+        log.debug("Setting new angle: {}", newAngle);
     }
 
     /**

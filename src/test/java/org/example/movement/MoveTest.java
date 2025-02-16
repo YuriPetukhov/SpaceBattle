@@ -1,5 +1,6 @@
 package org.example.movement;
 
+import org.example.entity.Angle;
 import org.example.entity.Point;
 import org.example.entity.Vector;
 import org.example.entity.Velocity;
@@ -19,8 +20,9 @@ class MoveTest {
 
             Velocity velocity = new Velocity(-7, 3);
             Vector vector = new Vector(velocity);
+            Angle angle = new Angle(0, 360);
 
-            MovingObjectImpl movingObject = new MovingObjectImpl(initialLocation, vector);
+            MovingObjectImpl movingObject = new MovingObjectImpl(initialLocation, vector, angle);
 
             ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
 
@@ -37,7 +39,8 @@ class MoveTest {
         @Test
         void testMoveThrowsExceptionWhenLocationIsUnreadable() throws Exception {
             ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
-            MovingObjectImpl movingObject = new MovingObjectImpl(null, new Vector(new Velocity(1, 1)));
+            Angle angle = new Angle(0, 360);
+            MovingObjectImpl movingObject = new MovingObjectImpl(null, new Vector(new Velocity(1, 1)), angle);
             Move move = new Move(movingObject, exceptionHandler);
 
             move.execute();
@@ -48,7 +51,8 @@ class MoveTest {
         @Test
         void testMoveThrowsExceptionWhenVelocityIsUnreadable() throws Exception {
             ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
-            MovingObjectImpl movingObject = new MovingObjectImpl(new Point(0, 0), null);
+            Angle angle = new Angle(0, 360);
+            MovingObjectImpl movingObject = new MovingObjectImpl(new Point(0, 0), null, angle);
             Move move = new Move(movingObject, exceptionHandler);
 
             move.execute();
@@ -62,6 +66,7 @@ class MoveTest {
             MovingObject movingObject = mock(MovingObject.class);
             when(movingObject.getLocation()).thenReturn(new Point(0, 0));
             when(movingObject.getVelocity()).thenReturn(new Vector(new Velocity(1, 1)));
+            when(movingObject.getAngle()).thenReturn(new Angle(0, 360));
             doThrow(new IllegalStateException("Cannot set location")).when(movingObject).setLocation(any());
 
             Move move = new Move(movingObject, exceptionHandler);

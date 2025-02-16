@@ -21,7 +21,7 @@ public class Move implements Command {
     @Override
     public void execute() throws Exception {
         try {
-            Point newLocation = Point.plus(movingObject.getLocation(), movingObject.getVelocity());
+            Point newLocation = Point.plus(movingObject.getLocation(), movingObject.getVelocity(), movingObject.getAngle());
             movingObject.setLocation(newLocation);
         } catch (Exception e) {
             exceptionHandler.handle(getClass().getSimpleName(), e);
