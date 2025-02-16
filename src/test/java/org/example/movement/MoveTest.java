@@ -1,79 +1,79 @@
 package org.example.movement;
 
+import org.example.entity.Angle;
 import org.example.entity.Point;
 import org.example.entity.Vector;
 import org.example.entity.Velocity;
+import org.example.exceptions.handler.ExceptionHandler;
+import org.example.exceptions.type.LocationNotSetException;
+import org.example.exceptions.type.VelocityNotSetException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class MoveTest {
 
-    @Test
-    void testMove() {
-        // Начальное положение
-        Point initialLocation = new Point(12, 5);
+        @Test
+        void testMove() throws Exception {
+            Point initialLocation = new Point(12, 5);
 
-        // Задаём скорость
-        Velocity velocity = new Velocity(-7, 3);
-        Vector vector = new Vector(velocity);
+            Velocity velocity = new Velocity(-7, 3);
+            Vector vector = new Vector(velocity);
+            Angle angle = new Angle(0, 360);
 
-        // Создаём объект для перемещения
-        MovingObjectImpl movingObject = new MovingObjectImpl(initialLocation, vector);
+            MovingObjectImpl movingObject = new MovingObjectImpl(initialLocation, vector, angle);
 
-        // Выполняем перемещение
-        Move move = new Move(movingObject);
-        move.execute();
+            ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
 
-        // Проверяем новое положение
-        Point newLocation = movingObject.getLocation();
-        assertEquals(5, newLocation.getX());
-        assertEquals(8, newLocation.getY());
-    }
+            Move move = new Move(movingObject, exceptionHandler);
+            move.execute();
 
-    @Test
-    void testMoveThrowsExceptionWhenLocationIsUnreadable() {
-        // Мок объекта с ошибкой при чтении положения
-        MovingObjectImpl movingObject = new MovingObjectImpl(null, new Vector(new Velocity(1, 1)));
+            Point newLocation = movingObject.getLocation();
+            assertEquals(5, newLocation.getX());
+            assertEquals(8, newLocation.getY());
 
-        Move move = new Move(movingObject);
+            verifyNoInteractions(exceptionHandler);
+        }
 
-        // Проверяем выброс исключения
-        Exception exception = assertThrows(IllegalStateException.class, move::execute);
-        assertEquals("Location is not set. Unable to get current location.", exception.getMessage());
-    }
+        @Test
+        void testMoveThrowsExceptionWhenLocationIsUnreadable() throws Exception {
+            ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+            Angle angle = new Angle(0, 360);
+            MovingObjectImpl movingObject = new MovingObjectImpl(null, new Vector(new Velocity(1, 1)), angle);
+            Move move = new Move(movingObject, exceptionHandler);
 
-    @Test
-    void testMoveThrowsExceptionWhenVelocityIsUnreadable() {
-        // Мок объекта с ошибкой при чтении скорости
-        MovingObjectImpl movingObject = new MovingObjectImpl(new Point(0, 0), null);
+            move.execute();
 
-        Move move = new Move(movingObject);
+            verify(exceptionHandler, times(1)).handle(eq(move.getClass().getSimpleName()), any(LocationNotSetException.class));
+        }
 
-        // Проверяем выброс исключения
-        Exception exception = assertThrows(IllegalStateException.class, move::execute);
-        assertEquals("Velocity is not set. Unable to get current velocity", exception.getMessage());
-    }
+        @Test
+        void testMoveThrowsExceptionWhenVelocityIsUnreadable() throws Exception {
+            ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+            Angle angle = new Angle(0, 360);
+            MovingObjectImpl movingObject = new MovingObjectImpl(new Point(0, 0), null, angle);
+            Move move = new Move(movingObject, exceptionHandler);
 
-    @Test
-    void testMoveThrowsExceptionWhenLocationIsUnwritable() {
-        // Создаём объект с начальным состоянием
-        Point initialLocation = new Point(0, 0);
-        Velocity velocity = new Velocity(1, 1);
-        Vector vector = new Vector(velocity);
+            move.execute();
 
-        // Мок с изменённым методом setLocation
-        MovingObject movingObject = new MovingObjectImpl(initialLocation, vector) {
-            @Override
-            public void setLocation(Point newValue) {
-                throw new IllegalStateException("Cannot set location");
-            }
-        };
+            verify(exceptionHandler, times(1)).handle(eq(move.getClass().getSimpleName()), any(VelocityNotSetException.class));
+        }
 
-        Move move = new Move(movingObject);
+        @Test
+        void testMoveThrowsExceptionWhenLocationIsUnwritable() throws Exception {
+            ExceptionHandler exceptionHandler = mock(ExceptionHandler.class);
+            MovingObject movingObject = mock(MovingObject.class);
+            when(movingObject.getLocation()).thenReturn(new Point(0, 0));
+            when(movingObject.getVelocity()).thenReturn(new Vector(new Velocity(1, 1)));
+            when(movingObject.getAngle()).thenReturn(new Angle(0, 360));
+            doThrow(new IllegalStateException("Cannot set location")).when(movingObject).setLocation(any());
 
-        // Проверяем выброс исключения
-        Exception exception = assertThrows(IllegalStateException.class, move::execute);
-        assertEquals("Cannot set location", exception.getMessage());
-    }
+            Move move = new Move(movingObject, exceptionHandler);
+
+            move.execute();
+
+            verify(exceptionHandler, times(1)).handle(eq(move.getClass().getSimpleName()), any(IllegalStateException.class));
+        }
+
 }

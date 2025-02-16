@@ -2,32 +2,29 @@ package org.example.movement;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.command.Command;
 import org.example.entity.Point;
-
-import static org.example.entity.Point.plus;
+import org.example.exceptions.handler.ExceptionHandler;
+import org.springframework.stereotype.Service;
 
 /**
  * Класс, отвечающий за перемещение объекта на игровом поле.
  * Вычисляет новое положение объекта на основе его текущего положения и скорости.
  */
 @Slf4j
+@Service
 @RequiredArgsConstructor
-public class Move {
+public class Move implements Command {
     private final MovingObject movingObject;
+    private final ExceptionHandler exceptionHandler;
 
-    /**
-     * Выполняет перемещение объекта.
-     * Новое положение объекта вычисляется как сумма текущего положения и вектора скорости.
-     */
-    public void execute() {
-        log.info("Starting movement for object: {}", movingObject);
-
-        // Вычисляем новое положение объекта
-        Point newLocation = plus(movingObject.getLocation(), movingObject.getVelocity());
-        log.debug("New location calculated: {}", newLocation);
-
-        // Устанавливаем новое положение объекта
-        movingObject.setLocation(newLocation);
-        log.info("Object moved to new location: {}", newLocation);
+    @Override
+    public void execute() throws Exception {
+        try {
+            Point newLocation = Point.plus(movingObject.getLocation(), movingObject.getVelocity(), movingObject.getAngle());
+            movingObject.setLocation(newLocation);
+        } catch (Exception e) {
+            exceptionHandler.handle(getClass().getSimpleName(), e);
+        }
     }
 }
