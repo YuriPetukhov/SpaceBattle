@@ -10,15 +10,14 @@ import java.util.function.Function;
 public class IoCContainer {
 
     private static final String IO_C_REGISTER = "IoC.Register";
+    private static final String IO_C_REGISTER_COMMAND = "IoC.Register.Command";
     private static final String IO_C_REGISTER_SINGLETON = "IoC.Register.Singleton";
     private static final String SCOPES_NEW = "Scopes.New";
     private static final String SCOPES_CURRENT = "Scopes.Current";
 
     private static final Map<String, Function<Object[], Object>> handlers = new HashMap<>();
-
     private static final ThreadLocal<Map<String, Function<Object[], Object>>> scopes =
             ThreadLocal.withInitial(HashMap::new);
-
     private static final ThreadLocal<String> scopeIds = ThreadLocal.withInitial(() -> "global");
 
     static {
@@ -38,6 +37,19 @@ public class IoCContainer {
             return null;
         });
 
+        handlers.put(IO_C_REGISTER_COMMAND, args -> {
+            if (args.length < 2 || !(args[1] instanceof Function)) {
+                throw new IllegalArgumentException("Invalid command registration: expected key and handler.");
+            }
+            String key = (String) args[0];
+            Function<Object[], Object> handler = (Function<Object[], Object>) args[1];
+
+            synchronized (handlers) {
+                handlers.put(key, handler);
+            }
+            return null;
+        });
+
         handlers.put(IO_C_REGISTER_SINGLETON, args -> {
             if (args.length < 2 || !(args[1] instanceof Function)) {
                 throw new IllegalArgumentException("Invalid registration: expected key and factory.");
@@ -45,7 +57,9 @@ public class IoCContainer {
             String key = (String) args[0];
             Function<Object[], Object> factory = (Function<Object[], Object>) args[1];
             Object instance = factory.apply(new Object[0]);
-            handlers.put(key, (args1) -> instance);
+            synchronized (handlers) {
+                handlers.put(key, (args1) -> instance);
+            }
             return null;
         });
 
