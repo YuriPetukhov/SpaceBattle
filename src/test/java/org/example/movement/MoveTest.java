@@ -66,7 +66,6 @@ class MoveTest {
             MovingObject movingObject = mock(MovingObject.class);
             when(movingObject.getLocation()).thenReturn(new Point(0, 0));
             when(movingObject.getVelocity()).thenReturn(new Vector(new Velocity(1, 1)));
-            when(movingObject.getAngle()).thenReturn(new Angle(0, 360));
             doThrow(new IllegalStateException("Cannot set location")).when(movingObject).setLocation(any());
 
             Move move = new Move(movingObject, exceptionHandler);
