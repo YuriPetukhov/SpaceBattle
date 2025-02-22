@@ -55,23 +55,6 @@ public class MovingObjectImpl implements MovingObject {
         return velocity;
     }
 
-    @Override
-    public Angle getAngle() throws InvalidDenominatorException {
-        if (angle == null) {
-            return new Angle(0, 360);
-        }
-        log.debug("Getting current angle: {}", angle);
-        return angle;
-    }
-
-    @Override
-    public void setAngle(Angle newAngle) {
-        if (newAngle != null) {
-            this.angle = newAngle;
-        }
-        log.debug("Setting new angle: {}", newAngle);
-    }
-
     /**
      * Устанавливает новое положение объекта.
      *

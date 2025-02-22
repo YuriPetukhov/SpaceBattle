@@ -14,9 +14,5 @@ public interface MovingObject {
 
     Vector getVelocity() throws VelocityNotSetException;
 
-    Angle getAngle() throws InvalidDenominatorException;
-
-    void setAngle(Angle newAngle);
-
     void setLocation(Point newValue) throws VelocityNotSetException;
 }
