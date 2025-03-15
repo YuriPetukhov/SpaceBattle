@@ -1,5 +1,10 @@
 package org.example.ioc;
 
+import org.example.adapter.AdapterFactory;
+import org.example.adapter.IUObject;
+import org.example.entity.Point;
+import org.example.exceptions.type.LocationNotSetException;
+import org.example.exceptions.type.VelocityNotSetException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -21,6 +26,7 @@ public class IoCContainer {
     private static final ThreadLocal<String> scopeIds = ThreadLocal.withInitial(() -> "global");
 
     static {
+        // Регистрация стандартных обработчиков
         handlers.put(IO_C_REGISTER, args -> {
             if (args.length < 2 || !(args[1] instanceof Function)) {
                 throw new IllegalArgumentException("Invalid registration: expected key and factory.");
@@ -74,6 +80,48 @@ public class IoCContainer {
         });
 
         handlers.put(SCOPES_CURRENT, args -> scopeIds.get());
+
+        // Регистрация фабрики для создания адаптеров
+        handlers.put("Adapter", args -> {
+            Class<?> iface = (Class<?>) args[0];
+            Object obj = args[1];
+            return AdapterFactory.createAdapter(iface, obj);
+        });
+
+        // Регистрация зависимостей для MovingObject
+        registerMovingObjectDependencies();
+    }
+
+    private static void registerMovingObjectDependencies() {
+        // Регистрация метода getLocation
+        handlers.put("MovingObject:getLocation", args -> {
+            IUObject obj = (IUObject) args[0];
+            try {
+                return obj.getProperty("location")
+                        .orElseThrow(() -> new LocationNotSetException("MovingObjectAdapter", "Location is not set."));
+            } catch (LocationNotSetException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        // Регистрация метода getVelocity
+        handlers.put("MovingObject:getVelocity", args -> {
+            IUObject obj = (IUObject) args[0];
+            try {
+                return obj.getProperty("velocity")
+                        .orElseThrow(() -> new VelocityNotSetException("MovingObjectAdapter", "Velocity is not set."));
+            } catch (VelocityNotSetException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        // Регистрация метода setLocation
+        handlers.put("MovingObject:setLocation", args -> {
+            IUObject obj = (IUObject) args[0];
+            Point newValue = (Point) args[1];
+            obj.setProperty("location", newValue);
+            return null;
+        });
     }
 
     public static Object Resolve(String key, Object... args) {
