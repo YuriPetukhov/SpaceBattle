@@ -1,18 +1,23 @@
 package org.example.threads;
 
+import org.example.exceptions.handler.ExceptionHandler;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.util.concurrent.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class EventLoopTest {
+
+    @Mock
+    private ExceptionHandler exceptionHandler;
     /**
      * Тест: проверяет, что после команды `start()` поток действительно запущен.
      */
     @Test
     void testStartThread() throws InterruptedException {
-        EventLoop eventLoop = new EventLoop(2); // Запуск 2 потоков
+        EventLoop eventLoop = new EventLoop(2, exceptionHandler); // Запуск 2 потоков
         CountDownLatch latch = new CountDownLatch(1);
 
         // Добавляем команду в очередь
@@ -29,7 +34,7 @@ class EventLoopTest {
      */
     @Test
     void testHardStop() throws InterruptedException {
-        EventLoop eventLoop = new EventLoop(2); // Запуск 2 потоков
+        EventLoop eventLoop = new EventLoop(2, exceptionHandler); // Запуск 2 потоков
         CountDownLatch latch = new CountDownLatch(1);
 
         eventLoop.submit(() -> {
@@ -61,7 +66,7 @@ class EventLoopTest {
      */
     @Test
     void testSoftStop() throws InterruptedException {
-        EventLoop eventLoop = new EventLoop(2);
+        EventLoop eventLoop = new EventLoop(2, exceptionHandler);
         CountDownLatch tasksCompleted = new CountDownLatch(3);
 
         // Добавляем задачи в очередь

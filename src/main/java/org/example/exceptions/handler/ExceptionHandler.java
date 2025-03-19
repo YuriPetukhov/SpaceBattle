@@ -13,7 +13,7 @@ public class ExceptionHandler implements Handler {
 
     private final ExceptionRegistry exceptionRegistry;
 
-    public void handle(String classname, Exception e) throws Exception {
+    public void handle(String classname, Exception e) {
         exceptionRegistry.handleException(classname, e.getMessage());
     }
 }

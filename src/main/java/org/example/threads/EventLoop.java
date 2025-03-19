@@ -2,6 +2,7 @@ package org.example.threads;
 
 import lombok.Getter;
 import org.example.command.Command;
+import org.example.exceptions.handler.ExceptionHandler;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -11,12 +12,14 @@ import java.util.concurrent.*;
 public class EventLoop {
     private final BlockingQueue<Command> queue = new LinkedBlockingQueue<>();
     private final ExecutorService workers;
+    private final ExceptionHandler exceptionHandler;
 
     private Runnable behaviour; // Для хранения поведения по умолчанию
 
     // Конструктор для инициализации с количеством потоков
-    public EventLoop(int numThreads) {
+    public EventLoop(int numThreads, ExceptionHandler exceptionHandler) {
         this.workers = Executors.newFixedThreadPool(numThreads);
+        this.exceptionHandler = exceptionHandler;
         this.behaviour = this::defaultBehaviour;
     }
 
@@ -41,7 +44,7 @@ public class EventLoop {
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt(); // Восстановление флага прерывания
                     } catch (Exception e) {
-                        System.err.println("Ошибка в команде: " + e.getMessage());
+                        exceptionHandler.handle(this.getClass().getName(), e);
                     }
                     // Если очередь пуста, выполняем поведение по умолчанию
                     if (queue.isEmpty()) {
