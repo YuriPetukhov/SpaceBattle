@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  * Класс, представляющий вращающийся объект.
  */
 @Slf4j
-@Component
 @AllArgsConstructor
 public class RotatingObjectImpl implements RotatingObject {
     private Angle angle;

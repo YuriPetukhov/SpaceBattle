@@ -12,7 +12,6 @@ import org.example.exceptions.handler.RetryExceptionHandler;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class ExceptionHandlingStrategy implements CommandHandler {
 

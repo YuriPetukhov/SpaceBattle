@@ -7,7 +7,6 @@ import org.example.exceptions.type.ExceptionRegistry;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class ExceptionHandler implements Handler {
 

@@ -1,13 +1,14 @@
 package org.example.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.example.command.Command;
 import org.example.exceptions.type.NotEnoughFuelException;
+import org.springframework.stereotype.Component;
 
-@Data
 @RequiredArgsConstructor
-public class FuelSystem implements Command {
+public class FuelSystem {
     private int fuelAmount;
 
     public FuelSystem(int initialFuel) {
@@ -28,8 +29,4 @@ public class FuelSystem implements Command {
         this.fuelAmount = fuelAmount;
     }
 
-    @Override
-    public void execute() throws Exception {
-
-    }
 }

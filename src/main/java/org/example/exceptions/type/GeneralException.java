@@ -5,7 +5,6 @@ import org.example.exceptions.AbstractExceptionHandling;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 public class GeneralException extends AbstractExceptionHandling {
 
 

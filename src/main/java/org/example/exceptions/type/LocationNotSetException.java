@@ -4,7 +4,6 @@ import org.example.command.Command;
 import org.example.exceptions.AbstractExceptionHandling;
 import org.springframework.stereotype.Component;
 
-@Component
 public class LocationNotSetException extends AbstractExceptionHandling {
 
 

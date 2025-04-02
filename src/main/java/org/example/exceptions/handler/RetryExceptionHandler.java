@@ -8,7 +8,6 @@ import org.example.exceptions.Retry;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class RetryExceptionHandler implements CommandHandler {
 

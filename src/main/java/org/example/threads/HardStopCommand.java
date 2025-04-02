@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.command.Command;
 import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class HardStopCommand implements Command {
     private final EventLoop eventLoop;

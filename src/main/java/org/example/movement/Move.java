@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.command.Command;
 import org.example.entity.Point;
 import org.example.exceptions.handler.ExceptionHandler;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
  * Вычисляет новое положение объекта на основе его текущего положения и скорости.
  */
 @Slf4j
-@Service
 @RequiredArgsConstructor
 public class Move implements Command {
     private final MovingObject movingObject;

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
  * Вычисляет новое направление объекта на основе текущего направления и угловой скорости.
  */
 @Slf4j
-@Service
 @RequiredArgsConstructor
 public class Rotate implements Command {
     private final RotatingObject rotatingObject;

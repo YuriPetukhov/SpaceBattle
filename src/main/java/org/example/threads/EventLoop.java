@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.*;
 
 @Getter
-@Component
 public class EventLoop {
     private final BlockingQueue<Command> queue = new LinkedBlockingQueue<>();
     private final ExecutorService workers;
