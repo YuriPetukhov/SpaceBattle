@@ -9,6 +9,7 @@ import org.example.entity.Velocity;
 import org.example.exceptions.type.InvalidDenominatorException;
 import org.example.exceptions.type.LocationNotSetException;
 import org.example.exceptions.type.VelocityNotSetException;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,9 +19,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Getter
 @Setter
-@Component
 @AllArgsConstructor
 @NoArgsConstructor
+@Primary
 public class MovingObjectImpl implements MovingObject {
 
     private Point location;

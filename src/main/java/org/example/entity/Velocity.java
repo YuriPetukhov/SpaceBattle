@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.exceptions.type.InvalidVelocityException;
+import org.springframework.stereotype.Component;
 
 @Data
 @AllArgsConstructor

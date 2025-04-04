@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-@Component
 public class IoCContainer {
 
     private static final String IO_C_REGISTER = "IoC.Register";

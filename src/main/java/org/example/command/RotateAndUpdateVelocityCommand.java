@@ -8,7 +8,6 @@ import org.example.movement.Move;
 import org.example.movement.MovingObject;
 import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class RotateAndUpdateVelocityCommand implements Command {
     private final MovingObject movingObject;

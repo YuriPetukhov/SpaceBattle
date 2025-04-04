@@ -9,7 +9,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class CommandQueue {
 

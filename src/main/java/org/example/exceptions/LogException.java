@@ -6,7 +6,6 @@ import org.example.command.Command;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class LogException implements Command {
 

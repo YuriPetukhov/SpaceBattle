@@ -5,7 +5,6 @@ import org.example.entity.FuelSystem;
 import org.example.exceptions.type.NotEnoughFuelException;
 import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class CheckFuelCommand implements Command {
     private final FuelSystem fuelSystem;

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.command.Command;
 import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class HandleExceptionCommand implements Command {
     private final Exception exception;

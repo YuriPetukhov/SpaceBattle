@@ -1,9 +1,11 @@
 package org.example.adapter;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
+@Component
 public class UObject implements IUObject {
     private final Map<String, Object> properties = new HashMap<>();
 

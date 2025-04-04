@@ -5,7 +5,6 @@ import org.example.entity.Velocity;
 import org.example.exceptions.handler.ExceptionHandler;
 import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class ChangeVelocityCommand implements Command {
     private final Velocity velocity;

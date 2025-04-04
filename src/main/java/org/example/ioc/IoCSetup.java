@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
 
-@Component
 public class IoCSetup {
     public static void setup() {
         // Регистрация метода getLocation

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Component
 public class ExceptionRegistry {
 
     private final Map<String, AbstractExceptionHandling> exceptionActionMap = new HashMap<>();

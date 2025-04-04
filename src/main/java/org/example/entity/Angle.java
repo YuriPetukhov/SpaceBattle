@@ -1,9 +1,13 @@
 package org.example.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.exceptions.type.InvalidDenominatorException;
+import org.springframework.stereotype.Component;
 
 @Data
+@RequiredArgsConstructor
 public class Angle {
     private int d;
     private final int n;
