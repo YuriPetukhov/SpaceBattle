@@ -34,6 +34,9 @@
 - `Game Server → Notification Service`: Kafka — игровые события
 - `Notification Service → User Service`: REST или Kafka — отправка уведомлений
 - Все сервисы → БД: JDBC / ORM — запись и чтение данных
+- `Game Server → Replay Service`: REST API — сохранение и воспроизведение реплеев
+- `Game Server → Monitoring Service`: REST API — отправка метрик игры
+- `Message Broker → Monitoring Service`: Kafka — сбор данных о событиях
 
 ---
 
