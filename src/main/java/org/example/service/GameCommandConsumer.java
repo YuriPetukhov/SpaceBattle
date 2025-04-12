@@ -28,7 +28,7 @@ public class GameCommandConsumer {
         interpretCommand.process(request);
     }
 
-    @KafkaListener(topics = "game-commands", groupId = "test-group")
+    @KafkaListener(topics = "test-commands", groupId = "test-group")
     public void listen(GameCommandRequest request) {
         log.info("Получено сообщение: {}", request);
         interpretCommand.process(request);
