@@ -34,7 +34,7 @@ class GameCommandConsumerTest {
     @Test
     void testKafkaListenerReceivesMessage() throws Exception {
         GameCommandRequest request = new GameCommandRequest("game1", "obj1", "move", Map.of("speed", 5));
-        kafkaTemplate.send("game-commands", request).get();
+        kafkaTemplate.send("test-commands", request).get();
 
         verify(interpretCommand, timeout(2000)).process(request);
     }
