@@ -5,16 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.entity.Angle;
 import org.example.entity.Point;
 import org.example.entity.Vector;
-import org.example.entity.Velocity;
-import org.example.exceptions.type.InvalidDenominatorException;
 import org.example.exceptions.type.LocationNotSetException;
 import org.example.exceptions.type.VelocityNotSetException;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Реализация интерфейса MovingObject.
- * Представляет объект, который может перемещаться по игровому полю.
+ * Реализация MovingObject с поддержкой коллизий.
  */
 @Slf4j
 @Getter
@@ -28,45 +27,87 @@ public class MovingObjectImpl implements MovingObject {
     private Vector velocity;
     private Angle angle;
 
-    /**
-     * Возвращает текущее положение объекта.
-     *
-     * @return текущее положение объекта
-     */
+    private final Set<MovingObject> neighbors = new HashSet<>();
+    private boolean explosive;
+    private boolean fragile;
+    private boolean elastic;
+
+    public MovingObjectImpl(Point location, Vector velocity, Angle angle) {
+        this.location = location;
+        this.velocity = velocity;
+        this.angle = angle;
+    }
+
     @Override
     public Point getLocation() throws LocationNotSetException {
         if (location == null) {
-            throw new LocationNotSetException(getClass().getSimpleName(), "Location is not set. Unable to get current location.");
+            throw new LocationNotSetException(getClass().getSimpleName(),
+                    "Location is not set. Unable to get current location.");
         }
         log.debug("Getting current location: {}", location);
         return location;
     }
 
-    /**
-     * Возвращает текущий вектор скорости объекта.
-     *
-     * @return текущий вектор скорости
-     */
     @Override
     public Vector getVelocity() throws VelocityNotSetException {
         if (velocity == null) {
-            throw new VelocityNotSetException(getClass().getSimpleName(), "Velocity is not set. Unable to get current velocity");
+            throw new VelocityNotSetException(getClass().getSimpleName(),
+                    "Velocity is not set. Unable to get current velocity");
         }
         log.debug("Getting current velocity: {}", velocity);
         return velocity;
     }
 
-    /**
-     * Устанавливает новое положение объекта.
-     *
-     * @param newValue новое положение объекта
-     */
     @Override
-    public void setLocation(Point newValue) throws VelocityNotSetException {
-        if (newValue == null) {
+    public void setLocation(Point newLocation) throws VelocityNotSetException {
+        if (newLocation == null) {
             throw new VelocityNotSetException(getClass().getSimpleName(), "New location cannot be null");
         }
-        log.debug("Setting new location: {}", newValue);
-        this.location = newValue;
+        log.debug("Setting new location: {}", newLocation);
+        this.location = newLocation;
+    }
+
+
+    @Override
+    public void addNeighbor(MovingObject other) {
+        neighbors.add(other);
+    }
+
+    @Override
+    public void clearNeighbors() {
+        neighbors.clear();
+    }
+
+    /**
+     * Имитация отскока от другого объекта.
+     */
+    @Override
+    public void bounceFrom(MovingObject other) {
+        log.info("Object {} bounces from {}", this, other);
+
+    }
+
+    /**
+     * Логика уничтожения объекта.
+     */
+    @Override
+    public void destroy() {
+        log.info("Object {} is destroyed", this);
+
+    }
+
+    @Override
+    public boolean isExplosive() {
+        return explosive;
+    }
+
+    @Override
+    public boolean isFragile() {
+        return fragile;
+    }
+
+    @Override
+    public boolean isElastic() {
+        return elastic;
     }
 }
