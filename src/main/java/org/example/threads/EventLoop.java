@@ -1,6 +1,7 @@
 package org.example.threads;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.example.command.Command;
 import org.example.exceptions.handler.ExceptionHandler;
 import org.springframework.stereotype.Component;
