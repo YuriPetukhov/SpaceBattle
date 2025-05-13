@@ -1,16 +1,21 @@
 package org.example.command;
 
-import lombok.RequiredArgsConstructor;
 import org.example.entity.Velocity;
 import org.example.exceptions.handler.ExceptionHandler;
-import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
+
 public class ChangeVelocityCommand implements Command {
     private final Velocity velocity;
     private final int deltaX;
     private final int deltaY;
     private final ExceptionHandler exceptionHandler;
+
+    public ChangeVelocityCommand(Velocity velocity, int deltaX, int deltaY, ExceptionHandler exceptionHandler) {
+        this.velocity = velocity;
+        this.deltaX = deltaX;
+        this.deltaY = deltaY;
+        this.exceptionHandler = exceptionHandler;
+    }
 
     @Override
     public void execute() throws Exception {

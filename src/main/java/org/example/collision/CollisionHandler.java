@@ -1,7 +1,9 @@
 package org.example.collision;
 
 import org.example.movement.MovingObject;
+import org.springframework.stereotype.Component;
 
+@Component
 public abstract class CollisionHandler {
     protected CollisionHandler next;
 

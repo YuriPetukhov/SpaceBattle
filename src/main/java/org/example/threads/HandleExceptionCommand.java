@@ -1,12 +1,13 @@
 package org.example.threads;
 
-import lombok.RequiredArgsConstructor;
 import org.example.command.Command;
-import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
 public class HandleExceptionCommand implements Command {
     private final Exception exception;
+
+    public HandleExceptionCommand(Exception exception) {
+        this.exception = exception;
+    }
 
     @Override
     public void execute() {

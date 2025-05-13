@@ -1,20 +1,21 @@
 package org.example.command;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.exceptions.handler.ExceptionHandler;
-import org.springframework.stereotype.Component;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Slf4j
-@RequiredArgsConstructor
 public class CommandQueue {
 
     private final Queue<Command> queue = new ConcurrentLinkedQueue<>();
     private final ExceptionHandler exceptionHandler;
     private boolean isProcessing = false;
+
+    public CommandQueue(ExceptionHandler exceptionHandler) {
+        this.exceptionHandler = exceptionHandler;
+    }
 
     public synchronized void add(Command command) throws Exception {
         queue.offer(command);

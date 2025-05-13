@@ -1,12 +1,13 @@
 package org.example.command;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
-@RequiredArgsConstructor
+
 public class MacroCommand implements Command {
     private final List<Command> commands;
+
+    public MacroCommand(List<Command> commands) {
+        this.commands = commands;
+    }
 
     @Override
     public void execute() throws Exception {

@@ -1,19 +1,23 @@
 package org.example.command;
 
-import lombok.RequiredArgsConstructor;
 import org.example.entity.Angle;
 import org.example.entity.Velocity;
 import org.example.exceptions.handler.ExceptionHandler;
 import org.example.movement.Move;
 import org.example.movement.MovingObject;
-import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
 public class RotateAndUpdateVelocityCommand implements Command {
     private final MovingObject movingObject;
     private final Angle angle;
     private final Move moveCommand;
     private final ExceptionHandler exceptionHandler;
+
+    public RotateAndUpdateVelocityCommand(MovingObject movingObject, Angle angle, Move moveCommand, ExceptionHandler exceptionHandler) {
+        this.movingObject = movingObject;
+        this.angle = angle;
+        this.moveCommand = moveCommand;
+        this.exceptionHandler = exceptionHandler;
+    }
 
     @Override
     public void execute() throws Exception {

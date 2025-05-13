@@ -1,19 +1,20 @@
 package org.example.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.command.InterpretCommand;
 import org.example.dto.GameCommandRequest;
 import org.example.entity.Game;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
-@RequiredArgsConstructor
 public class GameCommandConsumer {
     private final InterpretCommand interpretCommand;
     private final GameService gameService;
+
+    public GameCommandConsumer(InterpretCommand interpretCommand, GameService gameService) {
+        this.interpretCommand = interpretCommand;
+        this.gameService = gameService;
+    }
 
     @KafkaListener(topics = "game-commands", groupId = "game-server-group")
     public void consumeCommand(GameCommandRequest request) {
