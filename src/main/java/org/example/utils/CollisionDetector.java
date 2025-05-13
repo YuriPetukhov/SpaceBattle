@@ -2,7 +2,9 @@ package org.example.utils;
 
 import org.example.movement.MovingObject;
 import org.example.entity.Point;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CollisionDetector {
     public static boolean checkCollision(MovingObject a, MovingObject b) {
         try {

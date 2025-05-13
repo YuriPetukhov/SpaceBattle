@@ -1,18 +1,14 @@
 package org.example.exceptions.strategy;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.command.Command;
 import org.example.command.CommandQueue;
 import org.example.exceptions.FailedRetry;
 import org.example.exceptions.handler.CommandHandler;
-import org.example.exceptions.handler.Handler;
 import org.example.exceptions.handler.LogExceptionHandler;
 import org.example.exceptions.handler.RetryExceptionHandler;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-@RequiredArgsConstructor
 public class ExceptionHandlingStrategy implements CommandHandler {
 
     private static final int MAX_RETRIES = 2;
@@ -22,6 +18,12 @@ public class ExceptionHandlingStrategy implements CommandHandler {
     private final LogExceptionHandler logExceptionHandler;
 
     private int retryCount = 0;
+
+    public ExceptionHandlingStrategy(CommandQueue commandQueue, RetryExceptionHandler retryExceptionHandler, LogExceptionHandler logExceptionHandler) {
+        this.commandQueue = commandQueue;
+        this.retryExceptionHandler = retryExceptionHandler;
+        this.logExceptionHandler = logExceptionHandler;
+    }
 
     public void handle(Command command, Exception e) throws Exception {
         if (retryCount < MAX_RETRIES) {

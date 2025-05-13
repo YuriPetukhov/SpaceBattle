@@ -1,12 +1,13 @@
 package org.example.threads;
 
-import lombok.RequiredArgsConstructor;
 import org.example.command.Command;
-import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
 public class SoftStopCommand implements Command {
     private final EventLoop eventLoop;
+
+    public SoftStopCommand(EventLoop eventLoop) {
+        this.eventLoop = eventLoop;
+    }
 
     @Override
     public void execute() {

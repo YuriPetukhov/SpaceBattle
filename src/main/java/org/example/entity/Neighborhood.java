@@ -1,12 +1,13 @@
 package org.example.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import org.example.collision.CollisionProcessor;
 import org.example.movement.MovingObject;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
+@Data
 @Getter
 public class Neighborhood {
     private final int size;

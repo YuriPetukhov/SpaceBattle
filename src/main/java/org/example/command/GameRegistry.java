@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
 public class GameRegistry {
     private final Map<String, IUObject> objects = new ConcurrentHashMap<>();
 

@@ -1,17 +1,19 @@
 package org.example.command;
 
-import lombok.RequiredArgsConstructor;
 import org.example.entity.FuelSystem;
 import org.example.exceptions.handler.ExceptionHandler;
-import org.example.exceptions.type.NotEnoughFuelException;
-import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
 public class BurnFuelCommand implements Command {
 
     private final FuelSystem fuelSystem;
     private final Integer fuelConsumed;
     private final ExceptionHandler exceptionHandler;
+
+    public BurnFuelCommand(FuelSystem fuelSystem, Integer fuelConsumed, ExceptionHandler exceptionHandler) {
+        this.fuelSystem = fuelSystem;
+        this.fuelConsumed = fuelConsumed;
+        this.exceptionHandler = exceptionHandler;
+    }
 
     @Override
     public void execute() throws Exception {

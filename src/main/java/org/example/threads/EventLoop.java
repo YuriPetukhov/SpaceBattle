@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.example.command.Command;
 import org.example.exceptions.handler.ExceptionHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -17,7 +18,7 @@ public class EventLoop {
     private Runnable behaviour; // Для хранения поведения по умолчанию
 
     // Конструктор для инициализации с количеством потоков
-    public EventLoop(int numThreads, ExceptionHandler exceptionHandler) {
+    public EventLoop(@Value("${event.loop.interval:500}") int numThreads, ExceptionHandler exceptionHandler) {
         this.workers = Executors.newFixedThreadPool(numThreads);
         this.exceptionHandler = exceptionHandler;
         this.behaviour = this::defaultBehaviour;

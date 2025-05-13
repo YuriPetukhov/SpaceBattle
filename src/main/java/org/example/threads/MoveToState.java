@@ -2,9 +2,9 @@ package org.example.threads;
 
 import org.example.command.Command;
 import org.example.command.RunCommand;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.BlockingQueue;
-
 public class MoveToState implements CommandProcessingState {
 
     @Override

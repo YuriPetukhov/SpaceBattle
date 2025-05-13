@@ -1,17 +1,17 @@
 package org.example.command;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.GameCommandRequest;
 import org.example.ioc.IoCContainer;
 import org.example.threads.EventLoop;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
-@RequiredArgsConstructor
 public class InterpretCommand {
     private final EventLoop eventLoop;
+
+    public InterpretCommand(EventLoop eventLoop) {
+        this.eventLoop = eventLoop;
+    }
 
     public void process(GameCommandRequest request) {
         log.info("Создание команды для игры {}: объект {}, операция {}",

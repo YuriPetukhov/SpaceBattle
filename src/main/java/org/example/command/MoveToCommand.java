@@ -1,5 +1,6 @@
 package org.example.command;
 
+
 public class MoveToCommand implements Command {
 
     @Override

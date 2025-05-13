@@ -1,11 +1,12 @@
 package org.example.adapter;
 
 import org.example.ioc.IoCContainer;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
+@Component
 public class AdapterFactory {
     @SuppressWarnings("unchecked")
     public static <T> T createAdapter(Class<T> iface, Object obj) {

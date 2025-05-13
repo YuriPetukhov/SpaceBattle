@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Service
 public class CommandInterpreter {
     private final Map<String, CommandFactory> factories;
     private final GameRegistry registry;

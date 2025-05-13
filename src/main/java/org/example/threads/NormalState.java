@@ -2,9 +2,9 @@ package org.example.threads;
 
 import org.example.command.Command;
 import org.example.command.MoveToCommand;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.BlockingQueue;
-
 public class NormalState implements CommandProcessingState {
 
     @Override

@@ -1,17 +1,22 @@
 package org.example.command;
 
-import lombok.RequiredArgsConstructor;
 import org.example.collision.NeighborhoodSystem;
 import org.example.entity.Point;
 import org.example.entity.Vector;
 import org.example.exceptions.handler.ExceptionHandler;
 import org.example.movement.MovingObject;
 
-@RequiredArgsConstructor
+
 public class UpdatePositionCommand implements Command {
     private final MovingObject object;
     private final NeighborhoodSystem system;
     private final ExceptionHandler exceptionHandler;
+
+    public UpdatePositionCommand(MovingObject object, NeighborhoodSystem system, ExceptionHandler exceptionHandler) {
+        this.object = object;
+        this.system = system;
+        this.exceptionHandler = exceptionHandler;
+    }
 
     @Override
     public void execute() {
